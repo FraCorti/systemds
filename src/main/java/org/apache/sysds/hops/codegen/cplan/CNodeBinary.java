@@ -417,7 +417,7 @@ public class CNodeBinary extends CNode {
 
 	@Override
 	public boolean isSupported(GeneratorAPI api) {
-		boolean is_supported = (api == GeneratorAPI.CUDA || api == GeneratorAPI.JAVA);
+		boolean is_supported = (api == GeneratorAPI.CUDA || api == GeneratorAPI.JAVA || api == GeneratorAPI.LLVM);
 		int i = 0;
 		while(is_supported && i < _inputs.size()) {
 			CNode in = _inputs.get(i++);

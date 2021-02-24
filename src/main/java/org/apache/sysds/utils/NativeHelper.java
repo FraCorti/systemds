@@ -326,6 +326,42 @@ public class NativeHelper {
 		}
 	}
 
+	/** Attempts to load native LLVM
+	 *
+	 * @param customLibPath
+	 * @param llvm
+	 * @param optionalMsg message for debugging
+	 * @return true if successfully loaded LLVM
+	 */
+	public static boolean loadLLVM(String customLibPath, String llvm, String optionalMsg){
+		// First attempt to load from custom library path
+		if((customLibPath != null) && (!customLibPath.equalsIgnoreCase("none"))){
+			String libPath = customLibPath + File.separator + System.mapLibraryName(llvm);
+			try {
+				System.load(libPath);
+				LOG.info("Loaded the library:"+ libPath);
+				return true;
+			}
+			catch(UnsatisfiedLinkError e) {
+				LOG.warn("Unable to load " + llvm + " from " + libPath +
+					". Trying once more with System.loadLibrary(" + llvm +
+					") \n Message from exception was: " + e.getMessage());
+			}
+		}
+
+		// Then try loading using loadLibrary
+		try {
+			System.loadLibrary(llvm);
+			return true;
+		}
+		catch (UnsatisfiedLinkError e) {
+			LOG.debug("java.library.path: " + System.getProperty("java.library.path"));
+			LOG.debug("Unable to load " + llvm + (optionalMsg == null ? "" : (" (" + optionalMsg + ")")) +
+				" \n Message from exception was: " + e.getMessage());
+			return false;
+		}
+	}
+
 	/**
 	 * Attempts to load the JNI shared library from the sysds jar
 	 *

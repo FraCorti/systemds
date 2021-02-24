@@ -67,6 +67,8 @@ public class CodegenUtils
 
 	private static ConcurrentHashMap<String, SpoofCUDA> _native_op_data = new ConcurrentHashMap<>();
 
+	private static ConcurrentHashMap<String, SpoofLLVM> _native_llvm_op_data = new ConcurrentHashMap<>();
+
 	//javac-specific working directory for src/class files
 	private static String _workingDir = null;
 	
@@ -167,6 +169,15 @@ public class CodegenUtils
 	public static void putNativeOpData(SpoofCUDA op) {
 		_native_op_data.put(op.getName(), op);
 	}
+
+	public static SpoofLLVM getNativeLLVMOpData(String name) {
+		return _native_llvm_op_data.get(name);
+	}
+
+	public static void putNativeLLVMOpData(SpoofLLVM op){
+		_native_llvm_op_data.put(op.getName(), op);
+	}
+
 
 	public static SideInput createSideInput(MatrixBlock in) {
 		SideInput ret = (in.isInSparseFormat() || !in.isAllocated()) ?

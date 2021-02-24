@@ -66,11 +66,13 @@ public class CellwiseTmplTest extends AutomatedTestBase
 	private static final String TEST_NAME25 = TEST_NAME+25; //bias_add
 	private static final String TEST_NAME26 = TEST_NAME+26; //bias_mult
 	private static final String TEST_NAME27 = TEST_NAME+27; //outer < +7 negative
+	private static final String TEST_NAME28 = TEST_NAME+28; //dense product llvm
 
 	private static final String TEST_DIR = "functions/codegen/";
 	private static final String TEST_CLASS_DIR = TEST_DIR + CellwiseTmplTest.class.getSimpleName() + "/";
 	private final static String TEST_CONF6 = "SystemDS-config-codegen6.xml";
 	private final static String TEST_CONF7 = "SystemDS-config-codegen.xml";
+	private final static String TEST_CONF_LLVM = "SystemDS-config-codegen-LLVM.xml";
 	private static String TEST_CONF = TEST_CONF7;
 	
 	private static final double eps = Math.pow(10, -10);
@@ -78,7 +80,7 @@ public class CellwiseTmplTest extends AutomatedTestBase
 	@Override
 	public void setUp() {
 		TestUtils.clearAssertionInformation();
-		for( int i=1; i<=27; i++ ) {
+		for( int i=1; i<=28; i++ ) {
 			addTestConfiguration( TEST_NAME+i, new TestConfiguration(
 				TEST_CLASS_DIR, TEST_NAME+i, new String[] {String.valueOf(i)}) );
 		}
@@ -461,6 +463,9 @@ public class CellwiseTmplTest extends AutomatedTestBase
 		testCodegenIntegration( TEST_NAME27, false, ExecType.CP );
 	}
 
+	@Test
+	public void testCodegenCellwise28(){testCodegenIntegration(TEST_NAME28, false, ExecType.CP); }
+
 	public void testCodegenCellwiseRewrite27_sp() {
 		testCodegenIntegration( TEST_NAME27, true, ExecType.SPARK );
 	}
@@ -473,6 +478,8 @@ public class CellwiseTmplTest extends AutomatedTestBase
 		
 		if( testname.equals(TEST_NAME9) )
 			TEST_CONF = TEST_CONF6;
+		if( testname.equals(TEST_NAME28) )
+			TEST_CONF = TEST_CONF_LLVM;
 		
 		try
 		{

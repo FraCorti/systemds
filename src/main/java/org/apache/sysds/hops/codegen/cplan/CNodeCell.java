@@ -171,6 +171,9 @@ public class CNodeCell extends CNodeTpl
 			tmp = tmp.replaceAll("%AGG_OP%", agg_op);
 			tmp = tmp.replaceAll("%INITIAL_VALUE%", initial_value);
 		}
+		if(api == GeneratorAPI.LLVM) {
+
+		}
 		return tmp;
 	}
 
@@ -242,7 +245,7 @@ public class CNodeCell extends CNodeTpl
 	}
 	@Override
 	public boolean isSupported(GeneratorAPI api) {
-		return (api == GeneratorAPI.CUDA || api == GeneratorAPI.JAVA) && _output.isSupported(api) &&
+		return (api == GeneratorAPI.CUDA || api == GeneratorAPI.JAVA || api == GeneratorAPI.LLVM) && _output.isSupported(api) &&
 			!(getSpoofAggOp() == SpoofCellwise.AggOp.SUM_SQ);
 	}
 }

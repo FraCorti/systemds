@@ -255,9 +255,15 @@ public abstract class CNode
 					return new org.apache.sysds.hops.codegen.cplan.java.Binary();
 				else if (caller instanceof CNodeTernary)
 					return new org.apache.sysds.hops.codegen.cplan.java.Ternary();
-
-				else
-					return null;
+			case LLVM:
+				if(caller instanceof CNodeCell)
+					return new org.apache.sysds.hops.codegen.cplan.llvm.CellWise();
+				else if (caller instanceof CNodeUnary)  // TODO: should I return back to JAVA or return null?
+					return new org.apache.sysds.hops.codegen.cplan.java.Unary();
+				else if (caller instanceof CNodeBinary)
+					return new org.apache.sysds.hops.codegen.cplan.java.Binary();
+				else if (caller instanceof CNodeTernary)
+					return new org.apache.sysds.hops.codegen.cplan.java.Ternary();
 			default:
 				throw new RuntimeException("API not supported by code generator: " + api.toString());
 		}
